@@ -27,10 +27,10 @@ public class Producto
     [DataType(DataType.ImageUrl)]
     public string Imagen { get; set; } = null!;
     [Required(ErrorMessage = "El campo es obligatorio.")]
-    [ForeignKey("CategoriaId")]
-    public int Categoria { get; set; }
+    public int CategoriaId { get; set; }
     [Required(ErrorMessage = "El campo es obligatorio.")]
-    public Categoria CategoriaId { get; set; } = null!;
+    [ForeignKey("CategoriaId")]
+    public Categoria Categoria { get; set; } = null!;
     [Required(ErrorMessage = "El campo es obligatorio.")]
     public int Stock { get; set; }
     [Required(ErrorMessage = "El campo es obligatorio.")]
@@ -38,5 +38,5 @@ public class Producto
     public string Marca { get; set; } = null!;
     [Required(ErrorMessage = "El campo es obligatorio.")]
     public bool Activo { get; set; }
-    public ICollection<Detalle_Pedido> DetallePedido { get; set; } = null!;
+    public ICollection<Detalle_Pedido> DetallesPedido { get; set; } = null!;
 }

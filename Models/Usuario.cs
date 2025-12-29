@@ -1,4 +1,3 @@
-using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -13,53 +12,41 @@ public class Usuario
 
     [Key]
     public int UsuarioId { get; set; }
-
     [Required]
     [StringLength(50)]
     public string Nombre { get; set; } = null!;
-
-    [Required]
-    [StringLength(15)]
+    [Required(ErrorMessage = "El campo es obligatorio.")]
+    [RegularExpression(@"^\d{4}-\d{4}$", ErrorMessage = "El formato debe ser XXXX-XXXX.")]
+    [StringLength(9)]
     public string Telefono { get; set; } = null!;
-
-    [Required]
+    [Required(ErrorMessage = "El campo es obligatorio.")]
     [StringLength(100)]
     public string NombreUsuario { get; set; } = null!;
-
-    [Required]
+    [Required(ErrorMessage = "El campo es obligatorio.")]
     [StringLength(255)]
+    [DataType(DataType.Password)]
     public string Contrasenia { get; set; } = null!;
-
-    [Required]
+    [Required(ErrorMessage = "El campo es obligatorio.")]
     [StringLength(255)]
+    [EmailAddress(ErrorMessage = "El correo electronico no es valido.")]
     public string Correo { get; set; } = null!;
-
-    [Required]
+    [Required(ErrorMessage = "El campo es obligatorio.")]
     [StringLength(255)]
     public string Direccion { get; set; } = null!;
-
-    [Required]
+    [Required(ErrorMessage = "El campo es obligatorio.")]
     [StringLength(40)]
     public string Ciudad { get; set; } = null!;
-
-    [Required]
+    [Required(ErrorMessage = "El campo es obligatorio.")]
     [StringLength(20)]
     public string Estado { get; set; } = null!;
-
-    [Required]
+    [Required(ErrorMessage = "El campo es obligatorio.")]
     [StringLength(10)]
     public string CodigoPostal { get; set; } = null!;
-
-    [Required]
+    [Required(ErrorMessage = "El campo es obligatorio.")]
     public int RolId { get; set; }
-
     [ForeignKey("RolId")]
     public Rol Rol { get; set; } = null!;
-
-
     public ICollection<Pedido> Pedidos { get; set; }
-
     [InverseProperty("Usuario")]
     public ICollection<Direccion> Direcciones { get; set; } = null!;
-
 }

@@ -8,15 +8,14 @@ public class Categoria
     {
         Productos = new List<Producto>();
     }
+
     [Key]
     public int CategoriaId { get; set; }
-    [Required]
+    [Required(ErrorMessage = "El campo es obligatorio.")]
     [StringLength(100)]
     public string Nombre { get; set; } = null!;
-
-     [Required]
+    [Required(ErrorMessage = "El campo es obligatorio.")]
     [StringLength(1000)]
     public string Descripcion { get; set; } = null!;
-
     public ICollection<Producto> Productos { get; set; }
 }

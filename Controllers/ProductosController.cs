@@ -55,13 +55,21 @@ namespace silat.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("ProductoId,Codigo,Nombre,Modelo,Descripcion,Precio,Imagen,CategoriaId,Stock,Marca,Activo")] Producto producto)
         {
-            if (ModelState.IsValid)
+            var cat = await _context.Categorias
+           .Where(c => c.CategoriaId == producto.CategoriaId)
+           .FirstOrDefaultAsync();
+
+            if (cat != null)
             {
+                producto.Categoria = cat;
                 _context.Add(producto);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CategoriaId"] = new SelectList(_context.Categorias, "CategoriaId", "Descripcion", producto.CategoriaId);
+            ViewBag["CategoriaId"] = new SelectList
+            (
+                _context.Categorias, "CategoriaId", "Nombre", producto.CategoriaId
+            );
             return View(producto);
         }
 
@@ -72,14 +80,18 @@ namespace silat.Controllers
             {
                 return NotFound();
             }
-
-            var producto = await _context.Productos.FindAsync(id);
+            var producto = await _context.Productos.FindAsync();
             if (producto == null)
             {
                 return NotFound();
             }
-            ViewData["CategoriaId"] = new SelectList(_context.Categorias, "CategoriaId", "Descripcion", producto.CategoriaId);
+            ViewBag["CategoriaId"] = new SelectList
+          (
+              _context.Categorias, "CategoriaId", "Descripcion", producto.CategoriaId
+          );
             return View(producto);
+
+
         }
 
         // POST: Productos/Edit/5
@@ -94,8 +106,14 @@ namespace silat.Controllers
                 return NotFound();
             }
 
-            if (ModelState.IsValid)
+            var cat = await _context.Categorias
+           .Where(c => c.CategoriaId == producto.CategoriaId)
+           .FirstOrDefaultAsync();
+
+            if (cat != null)
             {
+                producto.Categoria = cat;
+
                 try
                 {
                     _context.Update(producto);
@@ -113,9 +131,14 @@ namespace silat.Controllers
                     }
                 }
                 return RedirectToAction(nameof(Index));
+
             }
-            ViewData["CategoriaId"] = new SelectList(_context.Categorias, "CategoriaId", "Descripcion", producto.CategoriaId);
+            ViewData["CategoriaId"] = new SelectList
+            (
+                _context.Categorias, "CategoriaId", "Descripcion", producto.CategoriaId
+            );
             return View(producto);
+
         }
 
         // GET: Productos/Delete/5

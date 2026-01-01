@@ -80,12 +80,12 @@ namespace silat.Controllers
             {
                 return NotFound();
             }
-            var producto = await _context.Productos.FindAsync();
+            var producto = await _context.Productos.FindAsync(id);
             if (producto == null)
             {
                 return NotFound();
             }
-            ViewBag["CategoriaId"] = new SelectList
+            ViewData["CategoriaId"] = new SelectList
           (
               _context.Categorias, "CategoriaId", "Descripcion", producto.CategoriaId
           );

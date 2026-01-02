@@ -12,6 +12,9 @@ namespace silat.Controllers
             _context = context;
         }
 
-
+        public override ViewResult View(string? viewName)
+        {
+            return base.View();
+        }
     }
 }

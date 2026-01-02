@@ -1,5 +1,7 @@
+using Humanizer;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.EntityFrameworkCore;
 using silat.Data;
 using silat.Models;
@@ -55,8 +57,24 @@ namespace silat.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("UsuarioId,Nombre,Telefono,NombreUsuario,Contrasenia,Correo,Direccion,Ciudad,Estado,CodigoPostal,RolId")] Usuario usuario)
         {
-            if (ModelState.IsValid)
+            var rol = await _context.Roles
+            .Where(d => d.RolId == usuario.RolId)
+            .FirstOrDefaultAsync();
+
+            if (rol != null)
             {
+                usuario.Rol = rol;
+                usuario.Direcciones = new List<Direccion>
+                {
+                    new Direccion
+                    {
+                        Adress = usuario.Direccion,
+                        Ciudad = usuario.Ciudad,
+                        CodigoPostal = usuario.CodigoPostal,
+                        Estado = usuario.Estado
+                    }
+                };
+
                 _context.Add(usuario);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -94,25 +112,60 @@ namespace silat.Controllers
                 return NotFound();
             }
 
-            if (ModelState.IsValid)
+            var rol = await _context.Roles
+           .Where(d => d.RolId == usuario.RolId)
+           .FirstOrDefaultAsync();
+
+            if (rol != null)
             {
-                try
+                usuario.Rol = rol;
+
+                var existingUser = await _context.Usuarios
+                .Include(u => u.Direcciones)
+                .FirstOrDefaultAsync(u => u.UsuarioId == id);
+
+                if (existingUser != null)
                 {
-                    _context.Update(usuario);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!UsuarioExists(usuario.UsuarioId))
+                    if (existingUser.Direcciones.Count > 0)
                     {
-                        return NotFound();
+                        var direccion = existingUser.Direcciones.First();
+                        direccion.Adress = usuario.Direccion;
+                        direccion.Ciudad = usuario.Ciudad;
+                        direccion.Estado = usuario.Estado;
+                        direccion.CodigoPostal = usuario.CodigoPostal;
+
                     }
                     else
                     {
-                        throw;
+                        existingUser.Direcciones = new List<Direccion>
+                        {
+                            new Direccion{
+                              Adress = usuario.Direccion,
+                              Ciudad = usuario.Ciudad,
+                              Estado = usuario.Estado,
+                              CodigoPostal = usuario.CodigoPostal,
+                            }
+                        };
                     }
+                    try
+                    {
+                        _context.Update(existingUser);
+                        await _context.SaveChangesAsync();
+                    }
+                    catch (DbUpdateConcurrencyException)
+                    {
+                        if (!UsuarioExists(usuario.UsuarioId))
+                        {
+                            return NotFound();
+                        }
+                        else
+                        {
+                            throw;
+                        }
+                    }
+                    return RedirectToAction(nameof(Index));
                 }
-                return RedirectToAction(nameof(Index));
+
             }
             ViewData["RolId"] = new SelectList(_context.Roles, "RolId", "NombreRol", usuario.RolId);
             return View(usuario);

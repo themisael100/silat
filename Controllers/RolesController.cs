@@ -5,13 +5,10 @@ using silat.Models;
 
 namespace silat.Controllers
 {
-    public class RolesController : Controller
+    public class RolesController : BaseController
     {
-        private readonly ApplicationDbContext _context;
-
-        public RolesController(ApplicationDbContext context)
+        public RolesController(ApplicationDbContext context) : base(context)
         {
-            _context = context;
         }
 
         // GET: Roles

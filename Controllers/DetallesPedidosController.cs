@@ -6,13 +6,10 @@ using silat.Models;
 
 namespace silat.Controllers
 {
-    public class DetallesPedidosController : Controller
+    public class DetallesPedidosController : BaseController
     {
-        private readonly ApplicationDbContext _context;
-
-        public DetallesPedidosController(ApplicationDbContext context)
+        public DetallesPedidosController(ApplicationDbContext context) : base(context)
         {
-            _context = context;
         }
 
         // GET: DetallesPedidos

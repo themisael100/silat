@@ -5,7 +5,7 @@ namespace silat.Controllers
 {
     public class DashboardController : BaseController
     {
-     public DashboardController(ApplicationDbContext context):base(context)
+        public DashboardController(ApplicationDbContext context) : base(context)
         {
         }
 

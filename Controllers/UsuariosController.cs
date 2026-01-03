@@ -8,13 +8,11 @@ using silat.Models;
 
 namespace silat.Controllers
 {
-    public class UsuariosController : Controller
+    public class UsuariosController : BaseController
     {
-        private readonly ApplicationDbContext _context;
 
-        public UsuariosController(ApplicationDbContext context)
+        public UsuariosController(ApplicationDbContext context) : base(context)
         {
-            _context = context;
         }
 
         // GET: Usuarios

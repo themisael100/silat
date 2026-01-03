@@ -6,13 +6,10 @@ using silat.Models;
 
 namespace silat.Controllers
 {
-    public class PedidosController : Controller
+    public class PedidosController : BaseController
     {
-        private readonly ApplicationDbContext _context;
-
-        public PedidosController(ApplicationDbContext context)
+        public PedidosController(ApplicationDbContext context) : base(context)
         {
-            _context = context;
         }
 
         // GET: Pedidos

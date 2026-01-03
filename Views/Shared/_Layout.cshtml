@@ -9,20 +9,20 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/silat.styles.css" asp-append-version="true" />
-    @*Agregar fontawesome*@
+    <script src="https://kit.fontawesome.com/ee2769d81d.js" crossorigin="anonymous"></script>
 </head>
 
-<body class="d-flex flex-comlumn h-100">
+<body class="d-flex flex-column h-100">
 
-    @await Html.PartialAsync("_Header")
+    @await Html.PartialAsync(partialViewName: "_Header")
 
-    <div class="container">
+    <div class="container mx-auto px-4">
         <main role="main" class="pb-3">
             @RenderBody()
         </main>
     </div>
 
-    <footer class="footer mt-auto border-top bg-ligth text-center text-muted py-3">
+    <footer class="footer mt-auto border-top bg-light text-center text-muted py-3">
         <div class="container">
             &copy; 2025 - silat - <a asp-area="" asp-controller="Home" asp-action="Privacy"
                 class="text-muted">Privacy</a>

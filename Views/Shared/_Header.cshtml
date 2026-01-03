@@ -1,5 +1,4 @@
 ﻿@using System.Security.Claims
-@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
 
 <header>
     <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
@@ -32,7 +31,7 @@
                     @if (User.Identity != null && User.Identity.IsAuthenticated)
                     {
                         string nombreUsuario = User.Identity.Name ?? "Desconocido";
-                        string idUsuario = User.FindFirst(ClaimTypes.NameIdentifier)?.Value!;
+                        string idUsuario = User.FindFirstValue(ClaimTypes.NameIdentifier)!;
 
 
                         <li class="nav-item dropdown">

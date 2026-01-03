@@ -1,11 +1,16 @@
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
+using silat.Data;
 using silat.Models;
 
 namespace silat.Controllers;
 
-public class HomeController : Controller
+public class HomeController : BaseController
 {
+    public HomeController(ApplicationDbContext context) : base(context)
+    {
+    }
+
     public IActionResult Index()
     {
         return View();

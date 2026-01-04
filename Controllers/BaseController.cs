@@ -3,6 +3,7 @@ using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
+using PayPalCheckoutSdk.Orders;
 using silat.Data;
 using silat.Models;
 using silat.Models.ViewModels;
@@ -41,6 +42,63 @@ namespace silat.Controllers
             }
             return count;
         }
+
+        public async Task<CarritoViewModel> AgregarProductoAlCarrito(int productoId, int cantidad)
+        {
+            var producto = await _context.Productos.FindAsync(productoId);
+
+            if (producto != null)
+            {
+                var carritoViewModel = await GetCarritoViewModelAsync();
+
+                var carritoItem = carritoViewModel.Items.FirstOrDefault(item => item.ProductoId == productoId);
+
+                if (carritoItem != null)
+                    carritoItem.Cantidad += cantidad;
+                else
+                {
+                    carritoViewModel.Items.Add(
+                        new CarritoItemViewModel
+                        {
+                            ProductoId = producto.ProductoId,
+                            Nombre = producto.Nombre,
+                            Precio = producto.Precio,
+                            Cantidad = cantidad
+                        }
+                    );
+                }
+                carritoViewModel.Total = carritoViewModel.Items.Sum(
+                    item => item.Cantidad * item.Precio
+                );
+                await UpdateCarritoViewModelAsync(carritoViewModel);
+                return carritoViewModel;
+            }
+        }
+
+        private async Task UpdateCarritoViewModelAsync(CarritoViewModel carritoViewModel)
+        {
+            var productoIds = carritoViewModel.Items.Select(
+             item => new ProductoIdAndCantidad
+             {
+                 ProductoId = item.ProductoId,
+                 Cantidad = item.Cantidad
+             })
+             .ToList();
+
+            var carritoJson = await Task.Run(() => JsonConvert.SerializeObject(productoIds));
+            Response.Cookies.Append(
+                "carrito", carritoJson,
+                new CookieOptions
+                {
+                    Expires = DateTimeOffset.Now.AddDays(7)
+                });
+        }
+
+        private async Task<CarritoViewModel> GetCarritoViewModelAsync()
+        {
+            throw new NotImplementedException();
+        }
+
         protected IActionResult HandleError(Exception e)
         {
             return View

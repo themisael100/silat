@@ -1,7 +1,11 @@
+using System.Data.Common;
+using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using silat.Data;
 using silat.Models;
+using silat.Models.ViewModels;
 
 namespace silat.Controllers
 {
@@ -37,5 +41,37 @@ namespace silat.Controllers
             }
             return count;
         }
+        protected IActionResult HandleError(Exception e)
+        {
+            return View
+            (
+                "Error",
+                new ErrorViewModel
+                {
+                    RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier
+                }
+            );
+        }
+
+        protected IActionResult HandleDbError(DbException dbException)
+        {
+            var ViewModel = new DbErrorViewModel
+            {
+                ErrorMessage = "Error de base de datos",
+                Details = dbException.Message
+            };
+            return View("DbError", ViewModel);
+        }
+
+        protected IActionResult HandleDbUpdateError(DbUpdateException dbUpdateException)
+        {
+            var ViewModel = new DbErrorViewModel
+            {
+                ErrorMessage = "Error de actualización de base de datos",
+                Details = dbUpdateException.Message
+            };
+            return View("DbError", ViewModel);
+        }
+
     }
 }

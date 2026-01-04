@@ -1,5 +1,3 @@
-using System;
-
 namespace silat.Models.ViewModels;
 
 public class CarritoItemViewModel

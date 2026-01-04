@@ -6,7 +6,7 @@ public class ProductosPaginadosViewModel
     public int PaginaActual { get; set; }
     public int TotalPaginas { get; set; }
     public int? CategoriaIdSeleccionada { get; set; }
-    public string? Bisqueda { get; set; }
+    public string? Busqueda { get; set; }
     public bool MostrarMensajeSinResultado { get; set; }
     public string? NombreCategoriaSeleccionada { get; set; }
 }

@@ -73,6 +73,7 @@ namespace silat.Controllers
                 await UpdateCarritoViewModelAsync(carritoViewModel);
                 return carritoViewModel;
             }
+            return new CarritoViewModel();
         }
 
         private async Task UpdateCarritoViewModelAsync(CarritoViewModel carritoViewModel)
@@ -96,7 +97,35 @@ namespace silat.Controllers
 
         private async Task<CarritoViewModel> GetCarritoViewModelAsync()
         {
-            throw new NotImplementedException();
+            var carritoJson = Request.Cookies["carrito"];
+
+            if (string.IsNullOrEmpty(carritoJson))
+                return new CarritoViewModel();
+
+            var productoIdsAndCantidades = JsonConvert.DeserializeObject<List<ProductoIdAndCantidad>>(carritoJson);
+            var carritoViewModel = new CarritoViewModel();
+
+            if (productoIdsAndCantidades != null)
+            {
+                foreach (var item in productoIdsAndCantidades)
+                {
+                    var producto = await _context.Productos.FindAsync(item.ProductoId);
+                    if (producto != null)
+                    {
+                        carritoViewModel.Items.Add(
+                            new CarritoItemViewModel
+                            {
+                                ProductoId = producto.ProductoId,
+                                Nombre = producto.Nombre,
+                                Precio = producto.Precio,
+                                Cantidad = item.Cantidad
+                            }
+                        );
+                    }
+                }
+            }
+            carritoViewModel.Total = carritoViewModel.Items.Sum(item => item.Subtotal);
+            return carritoViewModel;
         }
 
         protected IActionResult HandleError(Exception e)

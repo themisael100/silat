@@ -3,7 +3,6 @@ using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
-using PayPalCheckoutSdk.Orders;
 using silat.Data;
 using silat.Models;
 using silat.Models.ViewModels;

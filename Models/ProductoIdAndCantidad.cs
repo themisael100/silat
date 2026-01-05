@@ -1,5 +1,3 @@
-using System;
-
 namespace silat.Models;
 
 public class ProductoIdAndCantidad

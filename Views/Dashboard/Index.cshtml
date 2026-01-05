@@ -3,18 +3,84 @@
     ViewData["Title"] = "Dashboard";
 }
 
-<div class="container mt-4">
-    <h1 class="mb-4">Bienvenido al dashboard</h1>
-    <p class="mb-4">Aqui encontrarasas los enlaces a los indices de los demas controladores:</p>
+<div class="container py-5">
 
-    <div class="list-group">
-        @*ENLACES A LOS INDICES DE LOS DEMAS CONTROLADORES*@
-        <a href="@Url.Action("Index", "Usuarios")" class="list-group-item list-group-item-action">Usuarios</a>
-        <a href="@Url.Action("Index", "Roles")" class="list-group-item list-group-item-action">Roles</a>
-        <a href="@Url.Action("Index", "Productos")" class="list-group-item list-group-item-action">Productos</a>
-        <a href="@Url.Action("Index", "Pedidos")" class="list-group-item list-group-item-action">Pedidos</a>
-        <a href="@Url.Action("Index", "Direcciones")" class="list-group-item list-group-item-action">Direcciones</a>
-        <a href="@Url.Action("Index", "DetallesPedidos")" class="list-group-item list-group-item-action">DetallesPedidos</a>
-        <a href="@Url.Action("Index", "Categorias")" class="list-group-item list-group-item-action">Categorias</a>
+    <h2 class="mb-5 fw-bold text-dark">Panel de Administración</h2>
+
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4">
+
+        <div class="col mb-4">
+            <div class="card text-center h-100 shadow-sm">
+                <div class="card-body py-4">
+                    <i class="fa-solid fa-user-gear fs-2 mb-3 text-primary"></i>
+                    <h5 class="card-title fw-bold">Usuarios</h5>
+                    <a href="@Url.Action("Index", "Usuarios")" class="btn btn-primary rounded-pill px-4">Entrar</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col mb-4">
+            <div class="card text-center h-100 shadow-sm">
+                <div class="card-body py-4">
+                    <i class="fa-solid fa-shield-halved fs-2 mb-3 text-success"></i>
+                    <h5 class="card-title fw-bold">Roles</h5>
+                    <a href="@Url.Action("Index", "Roles")" class="btn btn-success rounded-pill px-4">Entrar</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col mb-4">
+            <div class="card text-center h-100 shadow-sm">
+                <div class="card-body py-4">
+                    <i class="fa-solid fa-tag fs-2 mb-3 text-info"></i>
+                    <h5 class="card-title fw-bold">Productos</h5>
+                    <a href="@Url.Action("Index", "Productos")"
+                        class="btn btn-info text-white rounded-pill px-4">Entrar</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col mb-4">
+            <div class="card text-center h-100 shadow-sm">
+                <div class="card-body py-4">
+                    <i class="fa-solid fa-truck-fast fs-2 mb-3 text-warning"></i>
+                    <h5 class="card-title fw-bold">Pedidos</h5>
+                    <a href="@Url.Action("Index", "Pedidos")"
+                        class="btn btn-warning text-white rounded-pill px-4">Entrar</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col mb-4">
+            <div class="card text-center h-100 shadow-sm">
+                <div class="card-body py-4">
+                    <i class="fa-solid fa-map-location-dot fs-2 mb-3 text-danger"></i>
+                    <h5 class="card-title fw-bold">Direcciones</h5>
+                    <a href="@Url.Action("Index", "Direcciones")" class="btn btn-danger rounded-pill px-4">Entrar</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col mb-4">
+            <div class="card text-center h-100 shadow-sm">
+                <div class="card-body py-4">
+                    <i class="fa-solid fa-clipboard-list fs-2 mb-3 text-secondary"></i>
+                    <h5 class="card-title fw-bold">Detalles</h5>
+                    <a href="@Url.Action("Index", "DetallesPedidos")"
+                        class="btn btn-secondary rounded-pill px-4">Entrar</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col mb-4">
+            <div class="card text-center h-100 shadow-sm">
+                <div class="card-body py-4">
+                    <i class="fa-solid fa-layer-group fs-2 mb-3 text-dark"></i>
+                    <h5 class="card-title fw-bold">Categorías</h5>
+                    <a href="@Url.Action("Index", "Categorias")" class="btn btn-dark rounded-pill px-4">Entrar</a>
+                </div>
+            </div>
+        </div>
+
     </div>
-</div> 
+</div>

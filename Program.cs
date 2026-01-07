@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using silat.Data;
+using silat.Services;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -28,6 +29,8 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
 });
 
 //Configurar servicios
+builder.Services.AddScoped<IProductoService, ProductoService>();
+builder.Services.AddScoped<ICategoriaService, CategoriaService>();
 
 
 var app = builder.Build();

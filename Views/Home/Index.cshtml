@@ -1,40 +1,100 @@
-﻿@{
+﻿@using Microsoft.CodeAnalysis.Scripting
+@using Microsoft.AspNetCore.Routing
+@{
     ViewData["Title"] = "Home - Silat";
 }
-<div class="container">
-    <nav aria-label="breadcrumb">
-        <ol class="breadcrumb" id="breadcrumb-container">
 
-        </ol>
+<div class="container py-4">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb" id="breadcrumb-container"></ol>
     </nav>
-    <div class="container">
-        <div class="tow">
-            <div class="col-md-12">
-                @foreach(var categoria in ViewBag.Categoria)
+
+    <div class="bg-white rounded-3 shadow-sm p-3 mb-4">
+        <div class="row align-items-center">
+            <div class="col-12">
+                @foreach (var categoria in ViewBag.Categorias)
                 {
-                    <a href="@Url.Action("Productos", "Home", new {categoriaId = categoria.CategoriaId})" class="btn bnt-outline-secondary btn-sm">@categoria.Nombre</a>
+                    <a href="@Url.Action("Productos", "Home", new { categoriaId = categoria.CategoriaId })"
+                        class="btn btn-outline-secondary rounded-pill m-1">@categoria.Nombre</a>
                 }
             </div>
         </div>
     </div>
-    <h2 class="my-4">Productos destacados</h2>
-    <div class="row" id="productosContainer">
-        @foreach(var producto in Model)
+
+    <h2 class="fw-bold mb-4 pb-2 border-bottom border-primary border-3"
+        style="border-width: 3px !important; width: fit-content;">
+        Productos destacados
+    </h2>
+
+    <div class="row g-4" id="productosContainer">
+        @foreach (var producto in Model)
         {
-            <div class="col-md-4 col-sm-6 mb-4 productoItem" data-categoria="@producto.CategoriaId">
-                <div class="card h-100 d-grid">
-                    <a href="@Url.Action("DetalleProducto", "Home", new{id=producto.ProductoId})">
-                        <img class="card-img-top" src="@producto.Imagen" alt="Imagen del producto">
-                    </a>
-                    <div class="card-body">
-                        <h5 class="card-title text-center">
-                            <a href="@Url.Action("DetalleProducto", "Home", new{id=producto.ProductoId})">@producto.Nombre</a>
-                        </h5>
-                        <p class="card-text">@producto.Descripcion</p>
+            <div class="col-lg-4 col-md-6 col-sm-12 productoItem" data-categoria="@producto.CategoriaId">
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="position-relative overflow-hidden bg-light">
+                        @if (producto.Stock > 0 && producto.Stock < 10)
+                        {
+                            <span class="position-absolute top-0 end-0 m-2 badge rounded-pill bg-warning text-dark">
+                                ¡Últimas unidades!
+                            </span>
+                        }
+                        <a href="@Url.Action("DetalleProducto", "Home", new { id = producto.ProductoId })">
+                            <img class="card-img-top" src="@producto.Imagen" alt="@producto.Nombre"
+                                style="height: 280px; object-fit: cover;">
+                        </a>
                     </div>
-                    <ul></ul>
+
+                    <div class="card-body d-flex flex-column">
+                        <h5 class="card-title fw-bold text-dark mb-2">
+                            <a href="@Url.Action("DetalleProducto", "Home", new { id = producto.ProductoId })"
+                                class="text-decoration-none text-dark">
+                                @producto.Nombre
+                            </a>
+                        </h5>
+
+                       <p class="card-text text-muted small mb-3">@producto.Descripcion</p> 
+
+                        <div class="mb-3">
+                            <span class="badge bg-light text-dark border">
+                                <i class="fas fa-tag"></i> Modelo: @producto.Modelo
+                            </span>
+                        </div>
+
+                        <h4 class="fw-bold text-dark mb-3">
+                            @String.Format("{0:C}", producto.Precio)
+                        </h4>
+
+                        <div class="mt-auto">
+                            @if (producto.Stock <= 0)
+                            {
+                                <div class="alert alert-danger mb-0" role="alert">
+                                    <i class="fas fa-exclamation-circle"></i> Producto agotado
+                                </div>
+                            }
+                            else
+                            {
+                                <form method="post" action="@Url.Action("AgregarProductoIndex")" class="d-flex gap-2">
+                                    <input type="hidden" name="id" value="@producto.ProductoId" />
+                                    <input type="number" class="form-control" style="width: 80px;" name="cantidad" value="1"
+                                        min="1" max="@producto.Stock" />
+                                    <button type="submit" class="btn btn-primary flex-grow-1">
+                                        <i class="fas fa-cart-plus"></i> Agregar
+                                    </button>
+                                </form>
+                            }
+                        </div>
+                    </div>
                 </div>
             </div>
         }
     </div>
 </div>
+
+@{
+    string? controllerName = Context.GetRouteValue("controller") as string;
+    string? actionName = Context.GetRouteValue("action") as string;
+}
+<script>
+    var controllerName = '@controllerName';
+    var actionName = '@actionName';
+</script>

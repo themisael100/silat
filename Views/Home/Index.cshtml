@@ -37,8 +37,8 @@
                     <div class="position-relative overflow-hidden bg-light">
                         @if (producto.Stock > 0 && producto.Stock < 10)
                         {
-                            <span class="position-absolute top-0 end-0 m-2 badge rounded-pill bg-warning text-dark">
-                                ¡Últimas unidades!
+                            <span class="position-absolute top-0 end-0 m-2 badge rounded-pill bg-primary text-white">
+                                <i class="fas fa-fire me-1"></i> ¡Últimas unidades!
                             </span>
                         }
                         <a href="@Url.Action("DetalleProducto", "Home", new { id = producto.ProductoId })">

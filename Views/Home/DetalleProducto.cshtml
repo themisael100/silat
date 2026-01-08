@@ -1,49 +1,89 @@
 @model Producto
 
 @{
-    ViewData["Title"] = "DetalleProducto";
-
+    ViewData["Title"] = "Detalle del Producto";
 }
-<div class="container">
-    <nav aria-label="breadcrumb">
+
+<div class="container mt-5">
+    <nav aria-label="breadcrumb" class="mb-4">
         <ol class="breadcrumb" id="breadcrumb-container"></ol>
     </nav>
-    <h2 class="my-4">@Model.Nombre</h2>
-    <div class="row">
-        <div class="col-md-6">
-            <img src="@Model.Imagen" class="img-fuild" alt="Imagen del producto">
+
+    <div class="row gx-lg-5 align-items-start">
+        <div class="col-md-6 mb-4">
+            <div class="d-flex align-items-center justify-content-center border rounded-3 bg-white shadow-sm p-2"
+                style="min-height: 400px; max-height: 500px; width: 100%;">
+
+                <img src="@Model.Imagen" class="img-fluid" style="max-height: 450px; width: auto; object-fit: contain;"
+                    alt="@Model.Nombre">
+            </div>
         </div>
+
         <div class="col-md-6">
-            <h4>Modelo: @Model.Modelo</h4>
-            <p>@Model.Descripcion</p>
-            <p>Precio: @String.Format("{0:C}", Model.Precio)</p>
-            <P>Stock: @Model.Stock</P>
-            <p>Categoria: @Model.Categoria.Nombre</p>
-            <p>Marca: @Model.Marca</p>
+            <h2 class="fw-bold text-primary mb-2">@Model.Nombre</h2>
+
+            <div class="d-flex flex-wrap gap-2 mb-4">
+                <span class="badge rounded-pill border text-dark fw-normal px-3 py-2 bg-light">
+                    <i class="fas fa-tag me-1 text-muted"></i> Modelo: @Model.Modelo
+                </span>
+                <span class="badge rounded-pill border text-dark fw-normal px-3 py-2 bg-light">
+                    <i class="fas fa-industry me-1 text-muted"></i>Marca: @Model.Marca
+                </span>
+            </div>
+
+            <p class="text-muted lh-lg mb-4">@Model.Descripcion</p>
+
+            <div class="mb-4">
+                <h3 class="fw-bold text-primary display-5 mb-1">
+                    @String.Format("{0:C}", Model.Precio)
+                </h3>
+                <div class="d-flex flex-wrap gap-2 mb-4">
+                    <span class="badge bg-light text-primary border border-primary px-3 py-2 rounded-pill">
+                        Stock disponible: @Model.Stock
+                    </span>
+                    @if (Model.Stock > 0 && Model.Stock < 10)
+                    {
+                        <span class="badge rounded-pill bg-primary text-white px-3 py-2 shadow-sm">
+                            <i class="fas fa-fire me-1"></i> ¡Últimas unidades!
+                        </span>
+                    }
+                </div>
+            </div>
+
+            <hr class="my-4 opacity-10">
+
             @if (Model.Stock <= 0)
             {
-                <div class="alert alert-danger mb-0" role="alert">
-                    <i class="fas fa-exclamation-circle"></i> Producto agotado
+                <div class="alert alert-danger rounded-pill border-0 shadow-sm" role="alert">
+                    <i class="fas fa-exclamation-circle me-2"></i> Producto agotado
                 </div>
             }
             else
             {
-                <form method="post" action="@Url.Action("AgregarProductoDetalle")" class="d-flex">
-                    <div class="input-group">
-                        <input type="number" class="form-control text-center shadow-none border-primary" name="cantidad"
-                            value="1" min="1" max="@Model.Stock"
-                            style="width: 60px; border-radius: 50px 0 0 50px; border-right: none;">
+                <form method="post" action="@Url.Action("AgregarProductoDetalle")">
+                    <input type="hidden" name="id" value="@Model.ProductoId" />
 
-                        <button type="submit" class="btn btn-primary fw-bold flex-grow-1"
-                            style="border-radius: 0 50px 50px 0;">
-                            <i class="fas fa-cart-plus"></i> Agregar
+                    <div class="input-group input-group-lg shadow-sm rounded-pill overflow-hidden border border-primary"
+                        style="max-width: 380px;">
+                        <input type="number" class="form-control text-center border-0 bg-light shadow-none" name="cantidad"
+                            value="1" min="1" max="@Model.Stock">
+
+                        <button type="submit" class="btn btn-primary fw-bold px-4 border-0">
+                            <i class="fas fa-cart-plus me-2"></i> AGREGAR
                         </button>
                     </div>
                 </form>
             }
-
+            <div class="mt-5 p-3 bg-light rounded-3 border-start border-4 border-primary">
+                <p class="small mb-1 text-uppercase fw-bold text-muted">Categoría</p>
+                <p class="mb-0 text-dark">@Model.Categoria.Nombre</p>
+            </div>
         </div>
     </div>
+
+
+</div>
+</div>
 </div>
 
 @{

@@ -1,0 +1,56 @@
+@model Producto
+
+@{
+    ViewData["Title"] = "DetalleProducto";
+
+}
+<div class="container">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb" id="breadcrumb-container"></ol>
+    </nav>
+    <h2 class="my-4">@Model.Nombre</h2>
+    <div class="row">
+        <div class="col-md-6">
+            <img src="@Model.Imagen" class="img-fuild" alt="Imagen del producto">
+        </div>
+        <div class="col-md-6">
+            <h4>Modelo: @Model.Modelo</h4>
+            <p>@Model.Descripcion</p>
+            <p>Precio: @String.Format("{0:C}", Model.Precio)</p>
+            <P>Stock: @Model.Stock</P>
+            <p>Categoria: @Model.Categoria.Nombre</p>
+            <p>Marca: @Model.Marca</p>
+            @if (Model.Stock <= 0)
+            {
+                <div class="alert alert-danger mb-0" role="alert">
+                    <i class="fas fa-exclamation-circle"></i> Producto agotado
+                </div>
+            }
+            else
+            {
+                <form method="post" action="@Url.Action("AgregarProductoDetalle")" class="d-flex">
+                    <div class="input-group">
+                        <input type="number" class="form-control text-center shadow-none border-primary" name="cantidad"
+                            value="1" min="1" max="@Model.Stock"
+                            style="width: 60px; border-radius: 50px 0 0 50px; border-right: none;">
+
+                        <button type="submit" class="btn btn-primary fw-bold flex-grow-1"
+                            style="border-radius: 0 50px 50px 0;">
+                            <i class="fas fa-cart-plus"></i> Agregar
+                        </button>
+                    </div>
+                </form>
+            }
+
+        </div>
+    </div>
+</div>
+
+@{
+    string? controllerName = Context.GetRouteValue("controller") as string;
+    string? actionName = Context.GetRouteValue("action") as string;
+}
+<script>
+    var controllerName = '@controllerName';
+    var actionName = '@actionName';
+</script>

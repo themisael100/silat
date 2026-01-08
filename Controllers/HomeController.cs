@@ -31,7 +31,7 @@ public class HomeController : BaseController
         }
     }
 
-    public IActionResult DetalleProductos(int id)
+    public IActionResult DetalleProducto(int id)
     {
         var producto = _productoService.GetProducto(id);
         if (producto == null)

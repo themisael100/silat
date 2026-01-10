@@ -1,5 +1,105 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
+﻿@if (!string.IsNullOrEmpty(Model.NombreCategoriaSeleccionada))
+{
+    <div class="alert alert-info">
+        Departamento seleccionado: @Model.NombreCategoriaSeleccionada
+    </div>
 }
+
+<div class="row" id="productosContainer">
+    @if (Model.Productos.Count == 0)
+    {
+        <div class="col-md-12">
+            <p>No se encontraron productos que coincidan con la busqueda</p>
+        </div>
+    }
+    else
+    {
+        @foreach (var producto in Model.Productos)
+        {
+            <div class="col-md-4 col-sm-6 mb-4 productoItem">
+                <div class="card h-100 shadow-sm">
+                    <div class="position-relative overflow-hidden bg-light">
+                        @if (producto.Stock > 0 && producto.Stock < 10)
+                        {
+                            <span class="position-absolute top-0 end-0 m-2 badge rounded-pill bg-primary text-white">
+                                <i class="fas fa-fire me-1"></i> ¡Últimas unidades!
+                            </span>
+                        }
+                        <a href="@Url.Action("DetalleProducto", "Home", new { id = producto.ProductoId })">
+                            <img class="card-img-top p-3 img-fluid" src="@producto.Imagen" alt="@producto.Nombre"
+                                style="height: 250px; object-fit: contain; background-color: white;">
+                        </a>
+                    </div>
+
+                    <div class="card-body d-flex flex-column">
+                        <h5 class="card-title fw-bold text-dark mb-2 text-center">
+                            <a href="@Url.Action("DetalleProducto", "Home", new { id = producto.ProductoId })"
+                                class="text-decoration-none text-primary">
+                                @producto.Nombre
+                            </a>
+                        </h5>
+
+                        <p class="card-text text-muted small mb-3">@producto.Descripcion</p>
+
+                        <div class="mb-3">
+                            <span class="badge bg-light text-dark border">
+                                <i class="fas fa-tag"></i> Modelo: @producto.Modelo
+                            </span>
+                        </div>
+
+                        <h4 class="fw-bold text-primary mb-3">
+                            @String.Format("{0:C}", producto.Precio)
+                        </h4>
+
+                        <div class="mt-auto">
+                            @if (producto.Stock <= 0)
+                            {
+                                <div class="alert alert-danger mb-0" role="alert">
+                                    <i class="fas fa-exclamation-circle"></i> Producto agotado
+                                </div>
+                            }
+                            else
+                            {
+                                <form method="post" action="@Url.Action("AgregarProductoIndex")" class="d-flex">
+                                    <input type="hidden" name="id" value="@producto.ProductoId" />
+                                    <input type="hidden" name="busqueda" value="@Model.Busqueda" />
+                                    <input type="hidden" name="pagina" value="@Model.PaginaActual" />
+                                    <input type="hidden" name="categoriaId" value="@Model.CategoriaIdSeleccionada" />
+                                    <div class="input-group">
+                                        <input type="number" class="form-control text-center shadow-none border-primary"
+                                            name="cantidad" value="1" min="1" max="@producto.Stock"
+                                            style="width: 60px; border-radius: 50px 0 0 50px; border-right: none;">
+
+                                        <button type="submit" class="btn btn-primary fw-bold flex-grow-1"
+                                            style="border-radius: 0 50px 50px 0;">
+                                            <i class="fas fa-cart-plus"></i> Agregar
+                                        </button>
+                                    </div>
+                                </form>
+                            }
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        }
+    }
+
+</div>
+<nav>
+    <ul class="pagination justify-content-center">
+        @if (Model.TotalPaginas > 1)
+        {
+            @for (int pagina = 1; pagina <= Model.TotalPaginas; pagina++)
+            {
+                <li class="page-item @pagina == Model.PaginaActual ? " active" : "">
+                    <a class="page-link"
+                        href="@Url.Action("Productos", "Home", new { pagina = pagina, categoriaId = Model.CategoriaIdSeleccionada, busqueda = Model.Busqueda })">
+                        @pagina
+                    </a>
+                </li>
+            }
+        }
+    </ul>
+</nav>

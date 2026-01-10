@@ -25,15 +25,15 @@ public class ProductoService : IProductoService
         return new Producto();
     }
 
-    public async Task<List<Producto>> GetProductoDestacado()
+    public async Task<List<Producto>> GetProductosDestacados()
     {
         IQueryable<Producto> productosQuery = _context.Productos;
         productosQuery = productosQuery.Where(p => p.Activo);
 
-        List<Producto> ProductosDestacados = await productosQuery
+        List<Producto> productosDestacados = await productosQuery
         .Take(9)
         .ToListAsync();
-        return ProductosDestacados;
+        return productosDestacados;
 
     }
 
@@ -45,12 +45,12 @@ public class ProductoService : IProductoService
         if (categoriaId.HasValue)
             query = query.Where(p => p.CategoriaId == categoriaId);
 
-        if (!String.IsNullOrEmpty(busqueda))
+        if (!string.IsNullOrEmpty(busqueda))
             query = query.Where(p => p.Nombre.Contains(busqueda) || p.Descripcion.Contains(busqueda));
 
-        int TotalProductos = await query.CountAsync();
+        int totalProductos = await query.CountAsync();
 
-        int totalPaginas = (int)Math.Ceiling((double)TotalProductos) / productosPorPagina;
+        int totalPaginas = (int)Math.Ceiling((double)totalProductos / productosPorPagina);
 
         if (pagina < 1)
             pagina = 1;
@@ -58,15 +58,16 @@ public class ProductoService : IProductoService
             pagina = totalPaginas;
 
         List<Producto> productos = new();
-        if (TotalProductos > 0)
+        if (totalProductos > 0)
         {
-            productos = await query.OrderBy(p => p.Nombre)
+            productos = await query
+            .OrderBy(p => p.Nombre)
             .Skip((pagina - 1) * productosPorPagina)
             .Take(productosPorPagina)
             .ToListAsync();
         }
 
-        bool mostrarMensajeSinResultados = TotalProductos == 0;
+        bool mostrarMensajeSinResultados = totalProductos == 0;
         var model = new ProductosPaginadosViewModel
         {
             Productos = productos,

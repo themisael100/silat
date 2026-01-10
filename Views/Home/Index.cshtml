@@ -32,7 +32,7 @@
     <div class="row g-4" id="productosContainer">
         @foreach (var producto in Model)
         {
-            <div class="col-md-4 col-sm-6 mb-4">
+            <div class="col-md-4 col-sm-6 mb-4 productoItem">
                 <div class="card h-100 shadow-sm">
                     <div class="position-relative overflow-hidden bg-light">
                         @if (producto.Stock > 0 && producto.Stock < 10)

@@ -12,16 +12,16 @@
     <div class="row mb-3">
         <nav class="col-md-3">
             <ul class="list-group">
-                <li class="list-group-item active">Filtrar los recultados</li>
+                <li class="list-group-item active">Filtrar resultados</li>
                 <li class="list-group-item">
                     <input type="checkbox" class="form-check-input" id="todasCheckbox" data-categoria="" checked />
                     <label class="form-check-label" for="todasCheckbox">Todas</label>
                 </li>
-                @foreach (var categoria in ViewBag.Categoria)
+                @foreach (var categoria in ViewBag.Categorias)
                 {
                     <li class="list-group-item">
                         <input type="checkbox" class="form-check-input categoriaCheckbox"
-                            id="categoriaCheckbox_@categoria.CategoriaId" data-categoria="@categoria.Categoria" />
+                            id="categoriaCheckbox_@categoria.CategoriaId" data-categoria="@categoria.CategoriaId" />
                         <label class="form-check-label"
                             for="categoriaCheckbox_@categoria.CategoriaId">@categoria.Nombre</label>
                     </li>
@@ -35,10 +35,10 @@
         </nav>
         <main role="main" class="col-md-9 pb-3">
             <div id="productosContainer">
-                <partial name="_ProductosPartial" model="Model" />
+                <!--  <partial name="_ProductosPartial" model="Model" />-->
+                @Html.Partial("_ProductosPartial", Model)
             </div>
         </main>
-
     </div>
 </div>
 
@@ -59,18 +59,23 @@
                 $('.categoriaCheckbox').prop('checked', isChecked);
                 filtrarProductos();
             });
+
             $('.categoriaCheckbox').on('change', function () {
-                var allChecked = $('.categoriaCheckbox:checked').length == $('.categoriaCheckbox').length;
-                $('todasCheckbox').prop('checked', allChecked);
+                var allChecked = $('.categoriaCheckbox:checked').length === $('.categoriaCheckbox').length;
+                $('#todasCheckbox').prop('checked', allChecked);
                 filtrarProductos();
             });
-            function filtrarProductos() {
+
+            function filtrarProductos()
+             {
                 var selectedCategorias = [];
                 $('.categoriaCheckbox:checked').each(function () {
                     var categoriaId = $(this).data('categoria');
                     selectedCategorias.push(categoriaId);
                 });
-                if (selectedCategorias.length === 0) {
+
+                if (selectedCategorias.length === 0) 
+                {
                     $('.productoItem').show();
                 } else {
                     $('.productoItem').hide();
@@ -78,12 +83,14 @@
                         $('.productoItem[data-categoria="' + categoriaId + '"]').show();
                     });
                 }
-                var Url = '@Url.Action("Productos", "Home")';
+
+                var url = '@Url.Action("Productos", "Home")'; 
                 var data = {
                     pagina: @Model.PaginaActual,
-                    categoria: CategoriaIdSeleccionada.join(","),
+                    categoriaId: selectedCategorias.join(","),
                     busqueda: '@Model.Busqueda'
                 };
+
                 $.ajax({
                     url: url,
                     type: 'GET',

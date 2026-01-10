@@ -21,8 +21,8 @@ public class HomeController : BaseController
 
         try
         {
-            List<Producto> productosDestacadaos = await _productoService.GetProductoDestacado();
-            return View(productosDestacadaos);
+            List<Producto> productosDestacados = await _productoService.GetProductosDestacados();
+            return View(productosDestacados);
         }
         catch (Exception e)
         {
@@ -44,12 +44,12 @@ public class HomeController : BaseController
     {
         try
         {
-            int productosPorPaginas = 9;
-            var model = await _productoService.GetProductosPaginados(categoriaId, busqueda, pagina, productosPorPaginas);
+            int productosPorPagina = 9;
+            var model = await _productoService.GetProductosPaginados(categoriaId, busqueda, pagina, productosPorPagina);
 
-            ViewBag.Categoria = await _categiriaService.GetCategorias();
+            ViewBag.Categorias = await _categiriaService.GetCategorias();
 
-            if (Request.Headers["X-Request-With"] == "XMLHttpRequest")
+            if (Request.Headers["X-Requested-With"] == "XMLHttpRequest")
             {
                 return PartialView("_ProductosPartial", model);
             }

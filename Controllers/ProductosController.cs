@@ -41,7 +41,7 @@ namespace silat.Controllers
         // GET: Productos/Create
         public IActionResult Create()
         {
-            ViewData["CategoriaId"] = new SelectList(_context.Categorias, "CategoriaId", "Descripcion");
+            ViewData["CategoriaId"] = new SelectList(_context.Categorias, "CategoriaId", "Nombre");
             return View();
         }
 

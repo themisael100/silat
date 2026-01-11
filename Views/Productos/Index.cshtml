@@ -4,87 +4,91 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css">
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Codigo)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Nombre)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Modelo)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Descripcion)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Precio)
-            </th>
-            @*  <th>
-                @Html.DisplayNameFor(model => model.Imagen)
-            </th>*@
-            <th>
-                @Html.DisplayNameFor(model => model.Categoria)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Stock)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Marca)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Activo)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Codigo)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Nombre)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Modelo)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Descripcion)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Precio)
-                </td>
-                @*  <td>
-                @Html.DisplayFor(modelItem => item.Imagen)
-            </td>*@
-                <td>
-                    @Html.DisplayFor(modelItem => item.Categoria.Descripcion)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Stock)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Marca)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Activo)
-                </td>
-                <td>
-                    <a asp-action="Edit" asp-route-id="@item.ProductoId">Edit</a> |
-                    <a asp-action="Details" asp-route-id="@item.ProductoId">Details</a> |
-                    <a asp-action="Delete" asp-route-id="@item.ProductoId">Delete</a>
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
+
+<div class="container-fluid py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="text-primary fw-light m-0">Inventario</h2>
+        <a asp-action="Create" class="btn btn-primary rounded-pill px-4 shadow-sm">
+            Crear Nuevo
+        </a>
+    </div>
+
+    <div class="card shadow-sm border-0 rounded-3">
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table id="miTabla" class="table table-borderless align-middle mb-0">
+                    <thead class="table-light">
+                        <tr>
+                            <th class="border-0 ps-4 text-muted small">CÓDIGO</th>
+                            <th class="border-0 text-muted small">PRODUCTO</th>
+                            <th class="border-0 text-muted small">PRECIO</th>
+                            <th class="border-0 text-muted small text-center">STOCK</th>
+                            <th class="border-0 text-muted small">ESTADO</th>
+                            <th class="border-0 pe-4 text-center text-muted small">ACCIONES</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td class="ps-4 text-muted small">@item.Codigo</td>
+                                <td>
+                                    <div class="fw-bold">@item.Nombre</div>
+                                    <div class="text-muted small">@item.Marca</div>
+                                </td>
+                                <td class="fw-bold text-dark">
+                                    @item.Precio.ToString("C")
+                                </td>
+                                <td class="text-center">
+                                    <span class="badge bg-light text-dark border">@item.Stock</span>
+                                </td>
+                                <td>
+                                    @if (item.Activo)
+                                    {
+                                        <span
+                                            class="badge rounded-pill bg-success-subtle text-success border border-success">Activo</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge rounded-pill bg-light text-muted border">Inactivo</span>
+                                    }
+                                </td>
+                                <td class="pe-4 text-center">
+                                    <div class="btn-group shadow-sm">
+                                        <a asp-action="Edit" asp-route-id="@item.ProductoId"
+                                            class="btn btn-sm btn-outline-secondary">Edit</a>
+                                        <a asp-action="Details" asp-route-id="@item.ProductoId"
+                                            class="btn btn-sm btn-outline-secondary text-info">Details</a>
+                                        <a asp-action="Delete" asp-route-id="@item.ProductoId"
+                                            class="btn btn-sm btn-outline-secondary text-danger">Delete</a>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            console.log("Cargando DataTable..."); // Esto te avisará en la consola si el script corre
+            $('#miTabla').DataTable({
+                "language": {
+                    "url": "//cdn.datatables.net/plug-ins/1.13.6/i18n/es-ES.json"
+                },
+                "pageLength": 5,
+                "responsive": true
+            });
+        });
+    </script>
+}

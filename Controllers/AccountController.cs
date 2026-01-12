@@ -25,6 +25,7 @@ namespace silat.Controllers
         [AllowAnonymous]
         [HttpPost]
         public async Task<IActionResult> Register(Usuario usuario)
+
         {
             try
             {
@@ -69,5 +70,59 @@ namespace silat.Controllers
                 return HandleDbError(dbException);
             }
         }
+
+        [AllowAnonymous]
+        public IActionResult Login()
+        {
+            if (User.Identity != null && User.Identity.IsAuthenticated)
+            {
+                if (User.IsInRole("Administrador") || User.IsInRole("Staff"))
+                    return RedirectToAction("Index", "Dashboard");
+                else
+                    return RedirectToAction("Index", "Home");
+            }
+            return View();
+        }
+
+        [AllowAnonymous]
+        [HttpPost]
+        public async Task<IActionResult> Login(string username, string password)
+        {
+            try
+            {
+                var user = await _context.Usuarios.FirstOrDefaultAsync(u => u.NombreUsuario == username && u.Contrasenia == password);
+
+                if (user != null)
+                {
+                    var identity = new ClaimsIdentity(CookieAuthenticationDefaults.AuthenticationScheme);
+
+                    identity.AddClaim(new Claim(ClaimTypes.Name, username));
+                    identity.AddClaim(new Claim(ClaimTypes.NameIdentifier, user.UsuarioId.ToString()));
+
+                    var rol = await _context.Roles.FirstOrDefaultAsync(r => r.RolId == user.RolId);
+                    if (rol != null)
+                    {
+                        identity.AddClaim(new Claim(ClaimTypes.Role, rol.NombreRol));
+                    }
+
+                    await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(identity));
+
+                    if (User.IsInRole("Administrador") || User.IsInRole("Staff"))
+                        return RedirectToAction("Index", "Dashboard");
+                    else
+                        return RedirectToAction("Index", "Home");
+                }
+                ModelState.AddModelError("", "Credenciales invalidas.");
+                return View();
+
+            }
+            catch (Exception e)
+            {
+
+                return HandleError(e);
+            }
+        }
+
+
     }
 }

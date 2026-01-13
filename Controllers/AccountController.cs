@@ -74,13 +74,6 @@ namespace silat.Controllers
         [AllowAnonymous]
         public IActionResult Login()
         {
-            if (User.Identity != null && User.Identity.IsAuthenticated)
-            {
-                if (User.IsInRole("Administrador") || User.IsInRole("Staff"))
-                    return RedirectToAction("Index", "Dashboard");
-                else
-                    return RedirectToAction("Index", "Home");
-            }
             return View();
         }
 
@@ -107,10 +100,14 @@ namespace silat.Controllers
 
                     await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(identity));
 
-                    if (User.IsInRole("Administrador") || User.IsInRole("Staff"))
-                        return RedirectToAction("Index", "Dashboard");
-                    else
-                        return RedirectToAction("Index", "Home");
+                    if (rol != null)
+                    {
+
+                        if (rol.NombreRol == "Administrador" || rol.NombreRol == "Staff")
+                            return RedirectToAction("Index", "Dashboard");
+                        else
+                            return RedirectToAction("Index", "Home");
+                    }
                 }
                 ModelState.AddModelError("", "Credenciales invalidas.");
                 return View();

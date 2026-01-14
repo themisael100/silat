@@ -26,8 +26,9 @@ namespace silat.Controllers
             return View(usuario);
         }
 
-        public IActionResult AgregarDireccion()
+        public IActionResult AgregarDireccion(int id)
         {
+            ViewBag.id = id;
             return View();
         }
 

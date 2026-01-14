@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using silat.Data;
+using silat.Models;
 
 namespace silat.Controllers
 {
@@ -25,5 +26,28 @@ namespace silat.Controllers
             return View(usuario);
         }
 
+        public IActionResult AgregarDireccion()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AgregarDireccion(Direccion direccion, int id)
+        {
+            try
+            {
+                var usuario = await _context.Usuarios.FirstOrDefaultAsync(u => u.UsuarioId == id);
+                if (usuario != null)
+                    direccion.Usuario = usuario;
+                await _context.SaveChangesAsync();
+                return RedirectToAction("Details", new { id });
+            }
+            catch (System.Exception)
+            {
+
+                return View(direccion);
+            }
+        }
     }
 }

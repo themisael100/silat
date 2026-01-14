@@ -64,7 +64,7 @@
 
                     @if (User.Identity != null && User.Identity.IsAuthenticated)
                     {
-                        string nombreUsuario = User.Identity.Name ?? "Usuario";
+                        string nombreUsuario = User.Identity.Name ?? "Desconocido";
                         string idUsuario = User.FindFirstValue(ClaimTypes.NameIdentifier)!;
 
                         <li class="nav-item dropdown">
@@ -76,7 +76,7 @@
                                 <li><a class="dropdown-item py-2" asp-controller="Perfil" asp-action="Details"
                                         asp-route-id="@idUsuario"><i class="fa-solid fa-id-card me-2"></i> Mi Perfil</a>
                                 </li>
-                                @if (User.IsInRole("Administrador"))
+                                @if (User.FindFirstValue(ClaimTypes.Role) == "Administrador")
                                 {
                                     <li><a class="dropdown-item py-2" asp-controller="Dashboard" asp-action="Index"><i
                                                 class="fa-solid fa-gauge me-2"></i>Dashboard</a></li>

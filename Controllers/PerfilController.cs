@@ -41,6 +41,8 @@ namespace silat.Controllers
                 var usuario = await _context.Usuarios.FirstOrDefaultAsync(u => u.UsuarioId == id);
                 if (usuario != null)
                     direccion.Usuario = usuario;
+
+                _context.Add(direccion);
                 await _context.SaveChangesAsync();
                 return RedirectToAction("Details", new { id });
             }

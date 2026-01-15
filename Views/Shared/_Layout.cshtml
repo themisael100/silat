@@ -25,12 +25,8 @@
         </main>
     </div>
 
-    <footer class="footer mt-auto border-top bg-light text-center text-muted py-3">
-        <div class="container">
-            &copy; 2025 - silat - <a asp-area="" asp-controller="Home" asp-action="Privacy"
-                class="text-muted">Privacy</a>
-        </div>
-    </footer>
+    @await Html.PartialAsync(partialViewName: "_Footer")
+    
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>

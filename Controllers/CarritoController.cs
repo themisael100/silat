@@ -36,7 +36,15 @@ namespace silat.Controllers
                 else
                     item.Cantidad = 0;
             }
-            var usuarioId = User.Identity?.IsAuthenticated == true ? int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)) : 0;
+            
+            var usuarioId = 0;
+            if (User.Identity?.IsAuthenticated == true)
+            {
+                var claim = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+                if (int.TryParse(claim, out var id))
+                    usuarioId = id;
+            }
 
             var direcciones = User.Identity?.IsAuthenticated == true ? _context.Direcciones.Where(d => d.UsuarioId == usuarioId).ToList() : new List<Direccion>();
 
@@ -66,6 +74,32 @@ namespace silat.Controllers
 
             }
             return RedirectToAction("Index", "Carrito");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> EliminarProducto(int id)
+        {
+            var carritoViewModel = await GetCarritoViewModelAsync();
+            var carritoItem = carritoViewModel.Items.FirstOrDefault(i => i.ProductoId == id);
+
+            if (carritoItem != null)
+            {
+                carritoViewModel.Items.Remove(carritoItem);
+
+                await UpdateCarritoViewModelAsync(carritoViewModel);
+            }
+            return RedirectToAction("Index");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> VaciarCarrito()
+        {
+            await RemoveCarritoViewModelAsync();
+            return RedirectToAction("Index");
+        }
+        private async Task RemoveCarritoViewModelAsync()
+        {
+            await Task.Run(() => Response.Cookies.Delete("carrito"));
         }
     }
 }

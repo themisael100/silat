@@ -75,7 +75,7 @@ namespace silat.Controllers
             return new CarritoViewModel();
         }
 
-        private async Task UpdateCarritoViewModelAsync(CarritoViewModel carritoViewModel)
+        public async Task UpdateCarritoViewModelAsync(CarritoViewModel carritoViewModel)
         {
             var productoIds = carritoViewModel.Items.Select(
              item => new ProductoIdAndCantidad
@@ -94,7 +94,7 @@ namespace silat.Controllers
                 });
         }
 
-        private async Task<CarritoViewModel> GetCarritoViewModelAsync()
+        public async Task<CarritoViewModel> GetCarritoViewModelAsync()
         {
             var carritoJson = Request.Cookies["carrito"];
 

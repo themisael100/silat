@@ -1,0 +1,172 @@
+@model silat.Models.ViewModels.ProcederConCompraViewModel
+
+@{
+    ViewData["Title"] = "Carrito";
+}
+
+<div class="container my-5">
+    <!-- TÍTULO -->
+    <div class="row mb-5">
+        <div class="col-12 text-center">
+            <h1 class="display-4 fw-bold text-primary mb-2">
+                <i class="fas fa-cart-shopping me-2"></i>Mi Carrito
+            </h1>
+            <p class="text-muted">Revisa los productos antes de finalizar tu compra</p>
+        </div>
+    </div>
+
+    @if (Model.Carrito.Items.Count == 0)
+    {
+        <!-- CARRITO VACÍO -->
+        <div class="row justify-content-center">
+            <div class="col-lg-5 col-md-7">
+                <div class="card shadow border-0">
+                    <div class="card-body text-center p-5">
+                        <i class="fas fa-cart-arrow-down text-muted mb-4" style="font-size: 5rem;"></i>
+                        <h3 class="fw-bold mb-3">Tu carrito está vacío</h3>
+                        <p class="text-muted mb-4">¡Empieza a agregar productos increíbles!</p>
+                        <a href="/Home" class="btn btn-primary btn-lg">
+                            <i class="fas fa-arrow-left me-2"></i>Ir a la tienda
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="row">
+            <!-- LISTA DE PRODUCTOS -->
+            <div class="col-lg-8 mb-4">
+                <div class="card shadow-sm border-0 mb-3">
+                    <div class="card-header bg-primary text-white py-3">
+                        <h5 class="mb-0 fw-bold">
+                            <i class="fas fa-box me-2"></i>Productos (@Model.Carrito.Items.Count)
+                        </h5>
+                    </div>
+                    <div class="list-group list-group-flush">
+                        @foreach (var item in Model.Carrito.Items)
+                        {
+                            <div class="list-group-item">
+                                <div class="row align-items-center">
+                                    <!-- Producto -->
+                                    <div class="col-md-5 mb-2 mb-md-0">
+                                        <h6 class="mb-1 fw-bold">@item.Nombre</h6>
+                                        <small class="text-primary">$@item.Precio c/u</small>
+                                    </div>
+
+                                    <!-- Cantidad -->
+                                    <div class="col-md-3 mb-2 mb-md-0">
+                                        <form asp-action="ActualizarCantidad"     asp-controller="Carrito"                         method="post">
+                                            <div class="input-group input-group-sm">
+                                                <input type="number"                name="cantidad"                  value="@item.Cantidad"
+                                                       class="form-control text-center"                                                       min="1" max="@item.Producto.Stock">
+                                                <button class="btn btn-outline-primary" type="submit">
+                                                    <i class="fas fa-rotate"></i>
+                                                </button>
+                                            </div>
+                                            <input type="hidden" name="id" value="@item.ProductoId">
+                                        </form>
+                                    </div>
+
+                                    <!-- Subtotal -->
+                                    <div class="col-md-3 mb-2 mb-md-0">
+                                        <h6 class="mb-0 fw-bold">@item.Subtotal.ToString("C")</h6>
+                                    </div>
+
+                                    <!-- Eliminar -->
+                                    <div class="col-md-1 text-end">
+                                        <form asp-action="EliminarProducto" asp-controller="Carrito" method="post">
+                                            <button class="btn btn-sm btn-outline-danger" type="submit">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                            <input type="hidden" name="id" value="@item.ProductoId">
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                    <div class="card-footer bg-white py-3">
+                        <form asp-controller="Carrito" asp-action="VaciarCarrito" method="post">
+                            <button class="btn btn-outline-danger">
+                                <i class="fas fa-trash-can me-2"></i>Vaciar carrito
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SIDEBAR DERECHO -->
+            <div class="col-lg-4">
+                <!-- RESUMEN -->
+                <div class="card shadow-sm border-0 mb-4">
+                    <div class="card-header bg-primary text-white py-3">
+                        <h5 class="mb-0 fw-bold">
+                            <i class="fas fa-receipt me-2"></i>Resumen del pedido
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between mb-2">
+                            <span>Productos:</span>
+                            <strong>@Model.Carrito.Items.Count</strong>
+                        </div>
+                        <hr class="my-3">
+                        <div class="d-flex justify-content-between">
+                            <h5 class="mb-0 fw-bold">Total:</h5>
+                            <h5 class="mb-0 fw-bold text-primary">@Model.Carrito.Total.ToString("C")</h5>
+                        </div>
+                    </div>
+                </div>
+
+                @if (User.Identity != null && User.Identity.IsAuthenticated)
+                {
+                    <!-- DIRECCIÓN DE ENVÍO -->
+                    <div class="card shadow-sm border-0">
+                        <div class="card-header bg-light py-3">
+                            <h6 class="mb-0 fw-bold">
+                                <i class="fas fa-truck me-2"></i>Dirección de envío
+                            </h6>
+                        </div>
+                        <div class="card-body">
+                            <form asp-controller="Carrito" asp-action="ProcederCompra" method="post">
+                                @foreach (var direccion in Model.Direcciones)
+                                {
+                                    <div class="form-check p-3 border rounded mb-3">
+                                        <input class="form-check-input"                       type="radio"                 name="direccionIdSeleccionada"
+                                               value="@direccion.DireccionId"                          id="dir_@direccion.DireccionId"                   required>
+                                        <label class="form-check-label" for="dir_@direccion.DireccionId">
+                                            <i class="fas fa-location-dot text-primary me-1"></i>
+                                            <strong>@direccion.Adress</strong>
+                                            <br>
+                                            <small class="text-muted">@direccion.Ciudad, @direccion.Estado -
+                                                @direccion.CodigoPostal</small>
+                                            </label>
+                                        </div>
+                                    }
+                                    <input type="hidden" name="montoTotal" value="@Model.Carrito.Total" />
+                                    <button class="btn btn-primary btn-lg w-100 mt-2">
+                                        <i class="fab fa-paypal me-2"></i>Proceder al pago
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    }
+                else
+                    {
+                        <!-- LOGIN REQUERIDO -->
+                        <div class="card shadow-sm border-0">
+                            <div class="card-body text-center p-5">
+                                <i class="fas fa-user-lock text-primary mb-3" style="font-size: 3rem;"></i>
+                                <h5 class="fw-bold mb-3">Inicia sesión</h5>
+                                <p class="text-muted mb-4">Para completar tu compra</p>
+                                <a asp-controller="Account" asp-action="Login"           class="btn btn-primary btn-lg w-100">
+                                    <i class="fas fa-right-to-bracket me-2"></i>Iniciar sesión
+                                </a>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        }
+    </div>

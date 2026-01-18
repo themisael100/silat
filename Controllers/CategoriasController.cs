@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using silat.Data;
@@ -5,6 +6,7 @@ using silat.Models;
 
 namespace silat.Controllers
 {
+    [Authorize(Policy = "RequireAdminOrStaff")]
     public class CategoriasController : BaseController
     {
         public CategoriasController(ApplicationDbContext context) : base(context)

@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -6,6 +7,7 @@ using silat.Models;
 
 namespace silat.Controllers
 {
+     [Authorize (Policy = "RequireAdminOrStaff")]
     public class DireccionesController : BaseController
     {
         public DireccionesController(ApplicationDbContext context) : base(context)

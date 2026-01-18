@@ -57,10 +57,10 @@
 
                                     <!-- Cantidad -->
                                     <div class="col-md-3 mb-2 mb-md-0">
-                                        <form asp-action="ActualizarCantidad"     asp-controller="Carrito"                         method="post">
+                                        <form asp-action="ActualizarCantidad" asp-controller="Carrito" method="post">
                                             <div class="input-group input-group-sm">
-                                                <input type="number"                name="cantidad"                  value="@item.Cantidad"
-                                                       class="form-control text-center"                                                       min="1" max="@item.Producto.Stock">
+                                                <input type="number" name="cantidad" value="@item.Cantidad"
+                                                       class="form-control text-center" min="1" max="@item.Producto.Stock">
                                                 <button class="btn btn-outline-primary" type="submit">
                                                     <i class="fas fa-rotate"></i>
                                                 </button>
@@ -129,12 +129,12 @@
                             </h6>
                         </div>
                         <div class="card-body">
-                            <form asp-controller="Carrito" asp-action="ProcederCompra" method="post">
+                            <form asp-controller="Carrito" asp-action="ProcederConCompra" method="post">
                                 @foreach (var direccion in Model.Direcciones)
                                 {
                                     <div class="form-check p-3 border rounded mb-3">
-                                        <input class="form-check-input"                       type="radio"                 name="direccionIdSeleccionada"
-                                               value="@direccion.DireccionId"                          id="dir_@direccion.DireccionId"                   required>
+                                        <input class="form-check-input" type="radio" name="direccionIdSeleccionada"
+                                               value="@direccion.DireccionId" id="dir_@direccion.DireccionId" required>
                                         <label class="form-check-label" for="dir_@direccion.DireccionId">
                                             <i class="fas fa-location-dot text-primary me-1"></i>
                                             <strong>@direccion.Adress</strong>
@@ -160,7 +160,7 @@
                                 <i class="fas fa-user-lock text-primary mb-3" style="font-size: 3rem;"></i>
                                 <h5 class="fw-bold mb-3">Inicia sesión</h5>
                                 <p class="text-muted mb-4">Para completar tu compra</p>
-                                <a asp-controller="Account" asp-action="Login"           class="btn btn-primary btn-lg w-100">
+                                <a asp-controller="Account" asp-action="Login" class="btn btn-primary btn-lg w-100">
                                     <i class="fas fa-right-to-bracket me-2"></i>Iniciar sesión
                                 </a>
                             </div>

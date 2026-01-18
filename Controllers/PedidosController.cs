@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -5,7 +6,8 @@ using silat.Data;
 using silat.Models;
 
 namespace silat.Controllers
-{
+{ 
+     [Authorize (Policy = "RequireAdminOrStaff")]
     public class PedidosController : BaseController
     {
         public PedidosController(ApplicationDbContext context) : base(context)

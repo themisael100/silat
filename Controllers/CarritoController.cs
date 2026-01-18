@@ -107,8 +107,8 @@ namespace silat.Controllers
             await Task.Run(() => Response.Cookies.Delete("carrito"));
         }
 
-        private readonly string clientId = "";
-        private readonly string clientSecret = "";
+        private readonly string clientId = "AQDruCnFXuQOuudY6XmnH8KiH1QN8PeIfHsyPdn49fpvDdFS8Gc6zGeyN4QT9kN9ORuHqmxrfNyhWJ7I";
+        private readonly string clientSecret = "EGXJe1HyqEyTIhB-3Ct50vvY341QSSkAEc3Zi1_VNfmf5_dqi23XdwLp79xkbjjm3dSDO6dFHqoGZQp-";
 
         public IActionResult ProcederConCompra(decimal montoTotal, int direccionIdSeleccionada)
         {

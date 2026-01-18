@@ -21,86 +21,86 @@
         <div class="container-fluid px-5">
 
             <a class="navbar-brand text-primary fw-bold fs-2 m-0" asp-controller="Home" asp-action="Index"
-                style="letter-spacing: -1.5px;">SILAT</a>
+               style="letter-spacing: -1.5px;">SILAT</a>
 
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-                data-bs-target="#navbarSupportedContent">
+                    data-bs-target="#navbarSupportedContent">
                 <span class="navbar-toggler-icon"></span>
             </button>
 
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-4">
                     <li class="nav-item"><a class="nav-link px-3 fw-medium" asp-controller="Home"
-                            asp-action="Index">Inicio</a></li>
-                    <li class="nav-item"><a class="nav-link px-3 fw-medium" asp-controller="Home"
-                            asp-action="Productos">Productos</a></li>
-                    <li class="nav-item"><a class="nav-link px-3 fw-medium" href="#">Ofertas</a></li>
-                    <li class="nav-item"><a class="nav-link px-3 fw-medium" href="#">Contacto</a></li>
-                </ul>
+                                                asp-action="Index">Inicio</a></li>
+                        <li class="nav-item"><a class="nav-link px-3 fw-medium" asp-controller="Home"
+                                                    asp-action="Productos">Productos</a></li>
+                            <li class="nav-item"><a class="nav-link px-3 fw-medium" href="#">Ofertas</a></li>
+                            <li class="nav-item"><a class="nav-link px-3 fw-medium" href="#">Contacto</a></li>
+                        </ul>
 
-                <form class="d-flex mx-auto w-100 justify-content-center" style="max-width: 450px;"
-                    asp-controller="Home" asp-action="Productos" method="get">
-                    <div class="input-group">
-                        <input class="form-control border-0 bg-light px-3" type="search" placeholder="Buscar..."
-                            name="busqueda" style="border-radius: 25px 0 0 25px;">
-                        <button class="btn btn-primary px-4" type="submit" style="border-radius: 0 25px 25px 0;">
-                            <i class="fa-solid fa-magnifying-glass"></i>
-                        </button>
-                    </div>
-                </form>
+                        <form class="d-flex mx-auto w-100 justify-content-center" style="max-width: 450px;"
+                              asp-controller="Home" asp-action="Productos" method="get">
+                            <div class="input-group">
+                                <input class="form-control border-0 bg-light px-3" type="search" placeholder="Buscar..."
+                                       name="busqueda" style="border-radius: 25px 0 0 25px;">
+                                <button class="btn btn-primary px-4" type="submit" style="border-radius: 0 25px 25px 0;">
+                                    <i class="fa-solid fa-magnifying-glass"></i>
+                                </button>
+                            </div>
+                        </form>
 
-                <ul class="navbar-nav ms-auto align-items-center">
+                        <ul class="navbar-nav ms-auto align-items-center">
 
-                    <li class="nav-item me-4">
-                        <a class="nav-link position-relative p-0" asp-controller="Carrito" asp-action="Index">
-                            <i class="fa-solid fa-cart-shopping fs-4 text-ligt"></i>
-                            <span
-                                class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger text-white"
-                                style="font-size: 0.65rem;">
-                                @ViewBag.NumeroProductos
-                            </span>
-                        </a>
-                    </li>
+                            <li class="nav-item me-4">
+                                <a class="nav-link position-relative p-0" asp-controller="Carrito" asp-action="Index">
+                                    <i class="fa-solid fa-cart-shopping fs-4 text-ligt"></i>
+                                    <span
+                                        class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger text-white"
+                                        style="font-size: 0.65rem;">
+                                        @ViewBag.NumeroProductos
+                                    </span>
+                                </a>
+                            </li>
 
-                    @if (User.Identity != null && User.Identity.IsAuthenticated)
-                    {
-                        string nombreUsuario = User.Identity.Name ?? "Desconocido";
-                        string idUsuario = User.FindFirstValue(ClaimTypes.NameIdentifier)!;
+                            @if (User.Identity != null && User.Identity.IsAuthenticated)
+                            {
+                                string nombreUsuario = User.Identity.Name ?? "Desconocido";
+                                string idUsuario = User.FindFirstValue(ClaimTypes.NameIdentifier)!;
 
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle fw-bold text-dark d-flex align-items-center" href="#"
-                                data-bs-toggle="dropdown">
-                                <i class="fa-regular fa-user fs-5 me-2"></i> @nombreUsuario
-                            </a>
-                            <ul class="dropdown-menu dropdown-menu-end shadow-lg border-0 mt-2">
-                                <li><a class="dropdown-item py-2" asp-controller="Perfil" asp-action="Details"
-                                        asp-route-id="@idUsuario"><i class="fa-solid fa-id-card me-2"></i> Mi Perfil</a>
-                                </li>
-                                @if (User.FindFirstValue(ClaimTypes.Role) == "Administrador")
-                                {
-                                    <li><a class="dropdown-item py-2" asp-controller="Dashboard" asp-action="Index"><i
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle fw-bold text-dark d-flex align-items-center" href="#"
+                                           data-bs-toggle="dropdown">
+                                        <i class="fa-regular fa-user fs-5 me-2"></i> @nombreUsuario
+                                    </a>
+                                    <ul class="dropdown-menu dropdown-menu-end shadow-lg border-0 mt-2">
+                                        <li><a class="dropdown-item py-2" asp-controller="Perfil" asp-action="Details"
+                                                   asp-route-id="@idUsuario"><i class="fa-solid fa-id-card me-2"></i> Mi Perfil</a>
+                                        </li>
+                                        @if (User.FindFirstValue(ClaimTypes.Role) == "Administrador")
+                                        {
+                                            <li><a class="dropdown-item py-2" asp-controller="Dashboard" asp-action="Index"><i
                                                 class="fa-solid fa-gauge me-2"></i>Dashboard</a></li>
-                                }
-                                <li>
-                                    <hr class="dropdown-divider">
-                                </li>
-                                <li><a class="dropdown-item py-2 text-danger" asp-controller="Account"
-                                        asp-action="Logout"><i class="fa-solid fa-right-from-bracket me-2"></i> Cerrar
-                                        sesión</a></li>
-                            </ul>
-                        </li>
-                    }
+                                            }
+                                            <li>
+                                                <hr class="dropdown-divider">
+                                            </li>
+                                            <li><a class="dropdown-item py-2 text-danger" asp-controller="Account"
+                                                   asp-action="Logout"><i class="fa-solid fa-right-from-bracket me-2"></i> Cerrar
+                                                sesión</a></li>
+                                            </ul>
+                                        </li>
+                                    }
                     else
-                    {
-                        <li class="nav-item">
-                            <a class="nav-link text-dark d-flex align-items-center fw-medium" asp-controller="Account"
-                                asp-action="Login">
-                                <i class="fa-regular fa-user fs-4 me-2"></i> Iniciar Sesión
-                            </a>
-                        </li>
-                    }
-                </ul>
-            </div>
-        </div>
-    </nav>
-</header>
+                                    {
+                                        <li class="nav-item">
+                                            <a class="nav-link text-dark d-flex align-items-center fw-medium" asp-controller="Account"
+                                                   asp-action="Login">
+                                                <i class="fa-regular fa-user fs-4 me-2"></i> Iniciar Sesión
+                                            </a>
+                                        </li>
+                                    }
+                                </ul>
+                            </div>
+                        </div>
+                    </nav>
+                </header>

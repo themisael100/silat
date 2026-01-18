@@ -16,6 +16,7 @@ public class ApplicationDbContext : DbContext
     public DbSet<Producto> Productos { get; set; } = null!;
     public DbSet<Rol> Roles { get; set; } = null!;
     public DbSet<Usuario> Usuarios { get; set; } = null!;
+    public DbSet<Banner> Banners { get; set; } = null!;
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -25,19 +26,19 @@ public class ApplicationDbContext : DbContext
         .HasMany(u => u.Pedidos)
         .WithOne(p => p.Usuario)
         .HasForeignKey(p => p.UsuarioId)
-        .OnDelete(DeleteBehavior.Cascade);
+        .OnDelete(DeleteBehavior.Restrict);
 
         modelBuilder.Entity<Producto>()
         .HasMany(p => p.DetallesPedido)
         .WithOne(dp => dp.Producto)
         .HasForeignKey(dp => dp.ProductoId)
-        .OnDelete(DeleteBehavior.Cascade);
+        .OnDelete(DeleteBehavior.Restrict);
 
         modelBuilder.Entity<Pedido>()
        .HasMany(p => p.DetallesPedido)
        .WithOne(dp => dp.Pedido)
        .HasForeignKey(dp => dp.PedidoId)
-       .OnDelete(DeleteBehavior.Cascade);
+       .OnDelete(DeleteBehavior.Restrict);
 
         modelBuilder.Entity<Pedido>()
         .Ignore(p => p.Direccion);

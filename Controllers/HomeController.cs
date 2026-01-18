@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using silat.Data;
 using silat.Models;
 using silat.Services;
@@ -18,6 +19,7 @@ public class HomeController : BaseController
     public async Task<IActionResult> Index()
     {
         ViewBag.Categorias = await _categiriaService.GetCategorias();
+        ViewBag.Banners = _context.Banners.ToList();
 
         try
         {

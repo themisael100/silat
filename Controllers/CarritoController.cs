@@ -1,9 +1,6 @@
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Build.Framework;
-using Microsoft.Build.Tasks.Deployment.Bootstrapper;
-using Microsoft.CodeAnalysis.Elfie.Serialization;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using PayPalCheckoutSdk.Core;
@@ -26,6 +23,8 @@ namespace silat.Controllers
         {
             var carritoViewModel = await GetCarritoViewModelAsync();
 
+            var itemsEliminar = new List<CarritoItemViewModel>();
+
             foreach (var item in carritoViewModel.Items)
             {
                 var producto = await _context.Productos.FindAsync(item.ProductoId);
@@ -33,13 +32,18 @@ namespace silat.Controllers
                 {
                     item.Producto = producto;
                     if (!producto.Activo)
-                        carritoViewModel.Items.Remove(item);
+                        itemsEliminar.Add(item);
                     else
                         item.Cantidad = Math.Min(item.Cantidad, producto.Stock);
                 }
                 else
-                    item.Cantidad = 0;
+                    itemsEliminar.Add(item);
             }
+            foreach (var item in itemsEliminar)
+                carritoViewModel.Items.Remove(item);
+            await UpdateCarritoViewModelAsync(carritoViewModel);
+
+
             carritoViewModel.Total = carritoViewModel.Items.Sum(item => item.Subtotal);
 
             var usuarioId = 0;

@@ -28,6 +28,8 @@
     <Folder Include="Services/" />
     <Folder Include="ViewComponents/" />
     <Folder Include="Views/Dashboard/" />
+    <Folder Include="Views/Shared/Components/" />
+    <Folder Include="Views/Shared/Components/CategoriasMenu/" />
   </ItemGroup>
 
 </Project>

@@ -1,0 +1,10 @@
+﻿@model List<Categoria>
+
+@foreach (var categoria in Model)
+{
+    <a href="@Url.Action("Productos", "Home", new { categoriaId = categoria.CategoriaId })"
+           class="dropdown-item d-flex align-items-center py-2 px-3 rounded-2">
+        <i class="fa-solid fa-angle-right me-2 text-warning"></i>
+        <span>@categoria.Nombre</span>
+    </a>
+}

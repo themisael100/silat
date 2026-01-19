@@ -26,6 +26,7 @@
   <ItemGroup>
     <Folder Include="Data/" />
     <Folder Include="Services/" />
+    <Folder Include="ViewComponents/" />
     <Folder Include="Views/Dashboard/" />
   </ItemGroup>
 

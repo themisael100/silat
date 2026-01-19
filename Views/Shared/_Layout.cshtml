@@ -7,31 +7,31 @@
     <title>@ViewData["Title"] - silat</title>
 
     <link rel="icon" type="image/svg+xml" href="~/logo.svg">
-    @* <link rel="icon" type="image/png" href="~/icono.png">*@
+        @* <link rel="icon" type="image/png" href="~/icono.png">*@
 
-    <link rel="stylesheet" href="~/css/bootstrap.min.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+        <link rel="stylesheet" href="~/css/silat.min.css" asp-append-version="true" />
+        <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
 
-    <script src="https://kit.fontawesome.com/ee2769d81d.js" crossorigin="anonymous"></script>
-</head>
+        <script src="https://kit.fontawesome.com/ee2769d81d.js" crossorigin="anonymous"></script>
+    </head>
 
-<body class="d-flex flex-column h-100">
+    <body class="d-flex flex-column h-100">
 
-    @await Html.PartialAsync(partialViewName: "_Header")
+        @await Html.PartialAsync(partialViewName: "_Header")
 
-    <div class="container mx-auto px-4">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
-    </div>
+        <div class="container mx-auto px-4">
+            <main role="main" class="pb-3">
+                @RenderBody()
+            </main>
+        </div>
 
-    @await Html.PartialAsync(partialViewName: "_Footer")
-    
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
-    <script src="~/js/breadcrumb.js" asp-append-version="true"></script>
-    @await RenderSectionAsync("Scripts", required: false)
-</body>
+        @await Html.PartialAsync(partialViewName: "_Footer")
+
+        <script src="~/lib/jquery/dist/jquery.min.js"></script>
+        <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="~/js/site.js" asp-append-version="true"></script>
+        <script src="~/js/breadcrumb.js" asp-append-version="true"></script>
+        @await RenderSectionAsync("Scripts", required: false)
+    </body>
 
 </html>

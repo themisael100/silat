@@ -21,20 +21,20 @@
                     <div class="position-relative overflow-hidden bg-light">
                         @if (producto.Stock > 0 && producto.Stock < 10)
                         {
-                            <span class="position-absolute top-0 end-0 m-2 badge rounded-pill bg-primary text-white">
+                            <span class="position-absolute top-0 end-0 m-2 badge rounded-pill bg-warning text-white">
                                 <i class="fas fa-fire me-1"></i> ¡Últimas unidades!
                             </span>
                         }
                         <a href="@Url.Action("DetalleProducto", "Home", new { id = producto.ProductoId })">
                             <img class="card-img-top p-3 img-fluid" src="@producto.Imagen" alt="@producto.Nombre"
-                                style="height: 250px; object-fit: contain; background-color: white;">
+                                 style="height: 250px; object-fit: contain; background-color: white;">
                         </a>
                     </div>
 
                     <div class="card-body d-flex flex-column">
                         <h5 class="card-title fw-bold text-dark mb-2 text-center">
                             <a href="@Url.Action("DetalleProducto", "Home", new { id = producto.ProductoId })"
-                                class="text-decoration-none text-primary">
+                                   class="text-decoration-none text-link">
                                 @producto.Nombre
                             </a>
                         </h5>
@@ -66,12 +66,12 @@
                                     <input type="hidden" name="pagina" value="@Model.PaginaActual" />
                                     <input type="hidden" name="categoriaId" value="@Model.CategoriaIdSeleccionada" />
                                     <div class="input-group">
-                                        <input type="number" class="form-control text-center shadow-none border-primary"
-                                            name="cantidad" value="1" min="1" max="@producto.Stock"
-                                            style="width: 60px; border-radius: 50px 0 0 50px; border-right: none;">
+                                        <input type="number" class="form-control text-center shadow-none border-success"
+                                               name="cantidad" value="1" min="1" max="@producto.Stock"
+                                               style="width: 60px; border-radius: 50px 0 0 50px; border-right: none;">
 
-                                        <button type="submit" class="btn btn-primary fw-bold flex-grow-1"
-                                            style="border-radius: 0 50px 50px 0;">
+                                        <button type="submit" class="btn btn-success fw-bold flex-grow-1"
+                                                style="border-radius: 0 50px 50px 0;">
                                             <i class="fas fa-cart-plus"></i> Agregar
                                         </button>
                                     </div>
@@ -95,7 +95,7 @@
             {
                 <li class="page-item @pagina == Model.PaginaActual ? " active" : "">
                     <a class="page-link"
-                        href="@Url.Action("Productos", "Home", new { pagina = pagina, categoriaId = Model.CategoriaIdSeleccionada, busqueda = Model.Busqueda })">
+                           href="@Url.Action("Productos", "Home", new { pagina = pagina, categoriaId = Model.CategoriaIdSeleccionada, busqueda = Model.Busqueda })">
                         @pagina
                     </a>
                 </li>

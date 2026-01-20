@@ -1,42 +1,62 @@
 @using silat.Models.ViewModels
 @model ProductosPaginadosViewModel
+
 @{
     ViewData["Title"] = "Productos";
 }
 
 <div class="container">
-    <nav aria-label="breadcrumb" class="mb-4">
-        <ol class="breadcrumb" id="breadcrumb-container"></ol>
+    <nav aria-label="breadcrumb" class="mb-4 mt-4">
+        <ol class="breadcrumb bg-light p-3 border rounded" id="breadcrumb-container"></ol>
     </nav>
 
     <div class="row mb-3">
         <nav class="col-md-3">
-            <ul class="list-group">
-                <li class="list-group-item active">Filtrar resultados</li>
-                <li class="list-group-item">
-                    <input type="checkbox" class="form-check-input" id="todasCheckbox" data-categoria="" checked />
-                    <label class="form-check-label" for="todasCheckbox">Todas</label>
-                </li>
-                @foreach (var categoria in ViewBag.Categorias)
-                {
-                    <li class="list-group-item">
-                        <input type="checkbox" class="form-check-input categoriaCheckbox"
-                            id="categoriaCheckbox_@categoria.CategoriaId" data-categoria="@categoria.CategoriaId" />
-                        <label class="form-check-label"
-                            for="categoriaCheckbox_@categoria.CategoriaId">@categoria.Nombre</label>
+            <div class="card border-0 shadow-sm mb-3">
+                <div class="card-header bg-dark border-0 py-3">
+                    <h6 class="fw-bold text-uppercase text-white mb-0">
+                        <i class="bi bi-funnel me-2"></i>Filtrar resultados
+                    </h6>
+                </div>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item border-0 py-3">
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" id="todasCheckbox" data-categoria=""
+                                   checked />
+                            <label class="form-check-label fw-bold" for="todasCheckbox">
+                                <i class="bi bi-check-circle me-2"></i>Todas
+                            </label>
+                        </div>
                     </li>
-                }
-            </ul>
-            <div class="d-flex mb-3">
-                <form action="@Url.Action("Productos", "Home")" method="get">
-                    <button type="submit" class="btn btn-link"> Ver todos los productos</button>
-                </form>
+                    @foreach (var categoria in ViewBag.Categorias)
+                    {
+                        <li class="list-group-item border-0 py-2">
+                            <div class="form-check">
+                                <input type="checkbox" class="form-check-input categoriaCheckbox"
+                                       id="categoriaCheckbox_@categoria.CategoriaId"                   data-categoria="@categoria.CategoriaId" />
+                                <label class="form-check-label" for="categoriaCheckbox_@categoria.CategoriaId">
+                                    <i class="bi bi-tag me-2"></i>@categoria.Nombre
+                                </label>
+                            </div>
+                        </li>
+                    }
+                </ul>
+            </div>
+
+            <div class="card border-0 shadow-sm">
+                <div class="card-body p-3">
+                    <form action="@Url.Action("Productos", "Home")" method="get">
+                        <button type="submit" class="btn btn-outline-dark w-100 py-2">
+                            <i class="bi bi-eye me-2"></i>Ver todos los productos
+                        </button>
+                    </form>
+                </div>
             </div>
         </nav>
+
         <main role="main" class="col-md-9 pb-3">
             <div id="productosContainer">
-                <!--  <partial name="_ProductosPartial" model="Model" />-->
-                @Html.Partial("_ProductosPartial", Model)
+                <partial name="_ProductosPartial" model="Model" />
             </div>
         </main>
     </div>
@@ -46,6 +66,7 @@
     string? controllerName = Context.GetRouteValue("controller") as string;
     string? actionName = Context.GetRouteValue("action") as string;
 }
+
 <script>
     var controllerName = '@controllerName';
     var actionName = '@actionName';
@@ -53,56 +74,54 @@
 
 @section Scripts {
     <script>
-        $(document).ready(function () {
-            $('#todasCheckbox').on('change', function () {
-                var idChecked = $(this).prop('checked');
-                $('.categoriaCheckbox').prop('checked', isChecked);
-                filtrarProductos();
-            });
-
-            $('.categoriaCheckbox').on('change', function () {
-                var allChecked = $('.categoriaCheckbox:checked').length === $('.categoriaCheckbox').length;
-                $('#todasCheckbox').prop('checked', allChecked);
-                filtrarProductos();
-            });
-
-            function filtrarProductos()
-             {
-                var selectedCategorias = [];
-                $('.categoriaCheckbox:checked').each(function () {
-                    var categoriaId = $(this).data('categoria');
-                    selectedCategorias.push(categoriaId);
+            $(document).ready(function () {
+                $('#todasCheckbox').on('change', function () {
+                    var idChecked = $(this).prop('checked');
+                    $('.categoriaCheckbox').prop('checked', idChecked);
+                    filtrarProductos();
                 });
 
-                if (selectedCategorias.length === 0) 
-                {
-                    $('.productoItem').show();
-                } else {
-                    $('.productoItem').hide();
-                    selectedCategorias.forEach(function (categoriaId) {
-                        $('.productoItem[data-categoria="' + categoriaId + '"]').show();
+                $('.categoriaCheckbox').on('change', function () {
+                    var allChecked = $('.categoriaCheckbox:checked').length === $('.categoriaCheckbox').length;
+                    $('#todasCheckbox').prop('checked', allChecked);
+                    filtrarProductos();
+                });
+
+                function filtrarProductos() {
+                    var selectedCategorias = [];
+                    $('.categoriaCheckbox:checked').each(function () {
+                        var categoriaId = $(this).data('categoria');
+                        selectedCategorias.push(categoriaId);
+                    });
+
+                    if (selectedCategorias.length === 0) {
+                        $('.productoItem').show();
+                    } else {
+                        $('.productoItem').hide();
+                        selectedCategorias.forEach(function (categoriaId) {
+                            $('.productoItem[data-categoria="' + categoriaId + '"]').show();
+                        });
+                    }
+
+                    var url = '@Url.Action("Productos", "Home")';
+                    var data = {
+                        pagina: @Model.PaginaActual,
+                        categoriaId: selectedCategorias.join(","),
+                        busqueda: '@Model.Busqueda'
+                    };
+
+                    $.ajax({
+                        url: url,
+                        type: 'GET',
+                        data: data,
+                        success: function (result) {
+                            $('#productosContainer').html(result);
+                        },
+                        error: function (xhr, status, error) {
+                            console.log(error);
+                        }
                     });
                 }
-
-                var url = '@Url.Action("Productos", "Home")'; 
-                var data = {
-                    pagina: @Model.PaginaActual,
-                    categoriaId: selectedCategorias.join(","),
-                    busqueda: '@Model.Busqueda'
-                };
-
-                $.ajax({
-                    url: url,
-                    type: 'GET',
-                    data: data,
-                    success: function (result) {
-                        $('#productosContainer').html(result);
-                    },
-                    error: function (xhr, status, error) {
-                        console.log(error);
-                    }
-                });
-            }
-        });
+            });
     </script>
 }

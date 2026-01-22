@@ -16,7 +16,6 @@ public class Usuario
     [StringLength(50)]
     public string Nombre { get; set; } = null!;
     [Required(ErrorMessage = "El campo es obligatorio.")]
-    [RegularExpression(@"^\d{4}-\d{4}$", ErrorMessage = "El formato debe ser XXXX-XXXX.")]
     [StringLength(9)]
     public string Telefono { get; set; } = null!;
     [Required(ErrorMessage = "El campo es obligatorio.")]

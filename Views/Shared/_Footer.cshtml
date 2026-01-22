@@ -1,73 +1,50 @@
-﻿<footer class="bg-light border-top mt-5">
+﻿<footer class="bg-dark text-white border-top border-secondary mt-5" style="background-color: #1a1d29 !important;">
     <div class="container py-5">
-        <div class="row gy-4">
+        <div class="row gy-4 justify-content-between">
 
-            <!-- Marca -->
             <div class="col-12 col-md-4">
-                <h5 class="fw-bold text-uppercase mb-3" style="color:#a100ff;">SILAT</h5>
-                <p class="text-muted small">
+                <h4 class="fw-bold mb-3 text-warning">SILAT</h4>
+                <p class="text-secondary small">
                     Moda urbana, calzado y accesorios con estilo moderno y calidad premium.
                 </p>
             </div>
 
-            <!-- Navegación -->
             <div class="col-6 col-md-2">
-                <h6 class="fw-semibold mb-3">Navegación</h6>
+                <h6 class="fw-bold mb-3">Explorar</h6>
                 <ul class="list-unstyled small">
-                    <li><a href="#" class="text-muted text-decoration-none">Inicio</a></li>
-                    <li><a href="#" class="text-muted text-decoration-none">Productos</a></li>
-                    <li><a href="#" class="text-muted text-decoration-none">Ofertas</a></li>
-                    <li><a href="#" class="text-muted text-decoration-none">Contacto</a></li>
+                    <li class="mb-2"><a href="#" class="text-secondary text-decoration-none">Productos</a></li>
+                    <li class="mb-2"><a href="#" class="text-secondary text-decoration-none">Ofertas</a></li>
+                    <li class="mb-2"><a href="#" class="text-secondary text-decoration-none">Contacto</a></li>
                 </ul>
             </div>
 
-            <!-- Categorías -->
             <div class="col-6 col-md-3">
-                <h6 class="fw-semibold mb-3">Categorías</h6>
-                <ul class="list-unstyled small">
-                    <li><a href="#" class="text-muted text-decoration-none">Moda Urbana</a></li>
-                    <li><a href="#" class="text-muted text-decoration-none">Calzado</a></li>
-                    <li><a href="#" class="text-muted text-decoration-none">Básicos & Denim</a></li>
-                    <li><a href="#" class="text-muted text-decoration-none">Accesorios</a></li>
+                <h6 class="fw-bold mb-3">Asistencia</h6>
+                <ul class="list-unstyled small text-secondary">
+                    <li class="mb-2"><i class="fa-solid fa-phone me-2 text-warning"></i> +503 1234-5678</li>
+                    <li class="mb-2"><i class="fa-solid fa-envelope me-2 text-warning"></i> contacto@silat.com</li>
+                    <li><i class="fa-solid fa-location-dot me-2 text-warning"></i> El Salvador</li>
                 </ul>
-            </div>
-
-            <!-- Contacto -->
-            <div class="col-12 col-md-3">
-                <h6 class="fw-semibold mb-3">Contacto</h6>
-
-                <p class="small text-muted mb-2">
-                    <i class="fa-solid fa-envelope me-2 text-primary"></i>
-                    contacto@silat.com
-                </p>
-
-                <p class="small text-muted mb-2">
-                    <i class="fa-solid fa-phone me-2 text-primary"></i>
-                    +503 1234-5678
-                </p>
-
-                <p class="small text-muted">
-                    <i class="fa-solid fa-location-dot me-2 text-primary"></i>
-                    El Salvador
-                </p>
             </div>
 
         </div>
 
-        <hr class="my-4">
-
-        <!-- Copyright -->
-        <div class="d-flex flex-column flex-md-row justify-content-between align-items-center small text-muted">
-            <span>© 2026 SILAT. Todos los derechos reservados.</span>
-
-            <div class="mt-2 mt-md-0">
-                <a href="#" class="text-muted text-decoration-none me-3">
-                    <i class="fa-solid fa-shield-halved me-1"></i> Privacidad
-                </a>
-                <a href="#" class="text-muted text-decoration-none">
-                    <i class="fa-solid fa-file-contract me-1"></i> Términos
-                </a>
+        <div class="border-top border-secondary mt-4 pt-4">
+            <div class="row align-items-center">
+                <div class="col-md-6 text-center text-md-start">
+                    <p class="small text-secondary mb-0">
+                        &copy; <span id="year"></span> <strong>SILAT</strong>. Todos los derechos reservados.
+                    </p>
+                </div>
+                <div class="col-md-6 text-center text-md-end mt-2 mt-md-0">
+                    <a href="#" class="text-secondary small text-decoration-none me-3">Privacidad</a>
+                    <a href="#" class="text-secondary small text-decoration-none">Términos</a>
+                </div>
             </div>
         </div>
     </div>
 </footer>
+<script>
+    const currentYear = new Date().getFullYear();
+    document.getElementById('year').textContent = currentYear;
+</script>

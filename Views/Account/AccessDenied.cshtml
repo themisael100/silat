@@ -1,9 +1,37 @@
 @{
-    ViewData["Title"] = "Acesso denegado";
+    ViewData["Title"] = "Acceso denegado";
 }
 
-<div class="container bg-lighr p-4">
-    <h2>Acceso denegado</h2>
-    <p>No tienes los permisos para acceder a esta pagina </p>
-    <p><a class="btn btn-outline-primary" asp-action="Login">Iniciar sesion</a></p>
+<div class="d-flex justify-content-center align-items-center vh-100 bg-light">
+    <div class="card shadow-sm border-0 rounded-4 overflow-hidden text-center" style="max-width: 450px; width: 90%;">
+        <div class="py-1" style="background-color: #1a1e29;"></div>
+
+        <div class="card-body p-5">
+            <div class="mb-4">
+                <div class="d-inline-flex align-items-center justify-content-center rounded-circle bg-opacity-10 bg-danger"
+                     style="width: 80px; height: 80px;">
+                    <span class="fs-1 text-danger">🚫</span>
+                </div>
+            </div>
+
+            <h3 class="fw-bold text-dark mb-3">Acceso Restringido</h3>
+            <p class="text-secondary small mb-4 px-2">
+                Su perfil actual no cuenta con los privilegios necesarios para acceder a este módulo.
+            </p>
+
+            <div class="d-grid gap-2">
+                <a asp-action="Login" class="btn text-white rounded-3 py-2 fw-bold shadow-sm"
+                       style="background-color: #1a1e29;">
+                    Iniciar sesión con otra cuenta
+                </a>
+                <a asp-controller="Home" asp-action="Index"
+                       class="btn btn-link text-muted text-decoration-none small mt-2">
+                    Volver a la página principal
+                </a>
+            </div>
+        </div>
+        <div class="card-footer bg-transparent border-0 pb-4 text-muted small opacity-50">
+            SILAT System &bull; 2026
+        </div>
+    </div>
 </div>
